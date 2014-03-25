@@ -1,5 +1,7 @@
 # mongoose-crate-imagemagick
 
+[![Dependency Status](https://david-dm.org/achingbrain/mongoose-crate-imagemagick.svg?theme=shields.io)](https://david-dm.org/achingbrain/mongoose-crate-imagemagick) [![devDependency Status](https://david-dm.org/achingbrain/mongoose-crate-imagemagick/dev-status.svg?theme=shields.io)](https://david-dm.org/achingbrainmongoose-crate-imagemagick#info=devDependencies) [![Build Status](https://img.shields.io/travis/achingbrain/mongoose-crate-imagemagick/master.svg)](https://travis-ci.org/achingbrain/mongoose-crate-imagemagick) [![Coverage Status](http://img.shields.io/coveralls/achingbrain/mongoose-crate-imagemagick/master.svg)](https://coveralls.io/r/achingbrain/mongoose-crate-imagemagick)
+
 A mongoose-crate FileProcessor that applies image transformations with ImageMagick.
 
 ## Prequisites
@@ -12,10 +14,9 @@ You can pass images through one or more ImageMagick filters:
 
 ```javascript
 var mongoose = require('mongoose'),
-  attachments = require('mongoose-crate'),
   crate = require("mongoose-crate"),
   LocalFS = require("mongoose-crate-localfs"),
-  ImageMagick = require("mongoose-crate-imagemagick");;
+  ImageMagick = require("mongoose-crate-imagemagick");
 
 var PostSchema = new mongoose.Schema({
   title: String,
