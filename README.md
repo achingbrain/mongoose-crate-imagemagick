@@ -64,9 +64,9 @@ post.attach("image", {path: "/path/to/image"}, function(error) {
 });
 ```
 
-## Metadata
+## Meta data
 
-When mongoose-crate-imagemagick extends the basic meta data added by mongoose-crate to add some image specific fields.  It provides the following for each transformation:
+`mongoose-crate-imagemagick` extends the basic meta data added by `mongoose-crate` to add some image specific fields.  It provides the following for each transformation:
 
 Example:
 
@@ -82,15 +82,13 @@ Example:
 }
 ```
 
-## Styles and ImageMagick Transformations
+## ImageMagick transformations
 
-Transformations are achieved by invoking the **convert** command from ImageMagick and passing all the properties of the style as arguments.
-
-For more information about convert, take a look at http://www.imagemagick.org/script/command-line-options.php
+Transformations are achieved by invoking the **convert** command from ImageMagick and passing all the properties of the transform as arguments.
 
 Example in convert command:
 
-    convert source.png -resize '50%' output.png
+    convert source.png -crop 120x120 -blur 5x10 output.png
 
 Example in plugin options:
 
@@ -102,30 +100,15 @@ PostSchema.plugin(crate, {
       processor: new ImageMagick({
         transforms: {
           small: {
-            resize: "50%"
-```
-
-### Multiple Transformations
-
-Use another properties under the transform to provide more transformations
-
-```javascript
-PostSchema.plugin(crate, {
-  ...
-  fields: {
-    image: {
-      processor: new ImageMagick({
-        transforms: {
-          small: {
             crop: "120x120",
-            blur: "5x10" //radius x stigma
+            blur: "5x10"
 ```
 
-For more information on available transform options, see the [ImageMagick website](http://www.imagemagick.org/script/command-line-options.php).
+For more information on available transforms, see the [ImageMagick website](http://www.imagemagick.org/script/command-line-options.php).
 
 ### Changing the Destination Format
 
-You can change the destination format by using the special transformation 'format' with a known file extension like *png*, *jpg*, *gif*, etc.
+You can change the destination format by using the special transform property `format` with a known file extension like *png*, *jpg*, *gif*, etc.
 
 Example:
 
@@ -142,7 +125,7 @@ PostSchema.plugin(crate, {
 
 ### Supported Formats
 
-By default we'll only try to process a few image types.  The supported list defaults to jpgs, pngs, gifs and tiffs.
+By default we'll only try to process a few common image types.  The supported list defaults to *jpgs*, *pngs*, *gifs* and *tiffs*.
 
 This list can be overriden by specifying the `formats` argument:
 
