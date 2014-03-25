@@ -99,4 +99,41 @@ describe("ImageMagick", function() {
 
 		done();
 	})
+
+	it("should transform a png", function(done) {
+		var processor = new ImageMagick({
+			transforms: {
+				smaller: {
+					"resize": "100x34",
+					"format": "jpg"
+				}
+			}
+		});
+
+		var file = path.resolve(__dirname + "/./fixtures/node_js_logo.png");
+		var storageProvider = {
+			save: function(path, callback) {
+				callback(null, path)
+			}
+		};
+
+		var model = {
+			id: "model_id",
+			smaller: {}
+		};
+
+		processor.process({
+			path: file,
+			mimeType: "image/png"
+		}, storageProvider, model, function(error) {
+			should(error).not.ok;
+
+			model.smaller.format.should.equal("JPEG");
+			model.smaller.width.should.equal(100);
+			model.smaller.height.should.equal(34);
+			model.smaller.mimeType.should.equal("image/jpeg");
+
+			done();
+		});
+	})
 })

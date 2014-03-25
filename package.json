@@ -18,7 +18,8 @@
     "mongoose-crate": "git://github.com/achingbrain/mongoose-crate.git",
     "async": "^0.2",
     "imagemagick": "^0.1",
-    "mkdirp": "^0.3"
+    "mkdirp": "^0.3",
+    "mmmagic": "^0.3"
   },
   "devDependencies": {
     "mocha": "^1.18",
