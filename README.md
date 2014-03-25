@@ -68,8 +68,6 @@ post.attach("image", {path: "/path/to/image"}, function(error) {
 
 `mongoose-crate-imagemagick` extends the basic meta data added by `mongoose-crate` to add some image specific fields.  It provides the following for each transformation:
 
-Example:
-
 ```javascript
 {
   width: 120,
@@ -106,11 +104,9 @@ PostSchema.plugin(crate, {
 
 For more information on available transforms, see the [ImageMagick website](http://www.imagemagick.org/script/command-line-options.php).
 
-### Changing the Destination Format
+### Changing the destination format
 
-You can change the destination format by using the special transform property `format` with a known file extension like *png*, *jpg*, *gif*, etc.
-
-Example:
+You can change the destination format by using the special transform property `format` with a known file extension like *png*, *jpg*, *gif*, etc:
 
 ```javascript
 PostSchema.plugin(crate, {
@@ -123,11 +119,11 @@ PostSchema.plugin(crate, {
             format: "jpg"
 ```
 
-### Supported Formats
+### Supported formats
 
 By default we'll only try to process a few common image types.  The supported list defaults to *jpgs*, *pngs*, *gifs* and *tiffs*.
 
-This list can be overriden by specifying the `formats` argument:
+This list can be overridden by specifying the `formats` argument:
 
 ```javascript
 PostSchema.plugin(crate, {
