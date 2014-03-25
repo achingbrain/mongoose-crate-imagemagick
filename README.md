@@ -13,7 +13,7 @@ A modern version of ImageMagick installed and available on the path.  You may al
 You can pass images through one or more ImageMagick filters:
 
 ```javascript
-var mongoose = require('mongoose'),
+var mongoose = require("mongoose"),
   crate = require("mongoose-crate"),
   LocalFS = require("mongoose-crate-localfs"),
   ImageMagick = require("mongoose-crate-imagemagick");
@@ -37,12 +37,12 @@ PostSchema.plugin(crate, {
             // keep the original file
           },
           small: {
-            resize: '150x150',
-            format: '.jpg'
+            resize: "150x150",
+            format: ".jpg"
           },
           medium: {
-            resize: '250x250',
-            format: '.jpg'
+            resize: "250x250",
+            format: ".jpg"
           }
         }
       })
@@ -50,7 +50,7 @@ PostSchema.plugin(crate, {
   }
 });
 
-var Post = mongoose.model('Post', PostSchema);
+var Post = mongoose.model("Post", PostSchema);
 ```
 
 .. then later:
@@ -64,7 +64,7 @@ post.attach("image", {path: "/path/to/image"}, function(error) {
 });
 ```
 
-### Metadata
+## Metadata
 
 When mongoose-crate-imagemagick extends the basic meta data added by mongoose-crate to add some image specific fields.  It provides the following for each transformation:
 
@@ -72,17 +72,17 @@ Example:
 
 ```javascript
 {
-  "width" : 120,
-  "height: 103,
-  "depth" : 8,
-  "format" : "PNG",
-  "name" : "dragon.png",
-  "size" : 26887,
-  "url" : "http://my_bucket.s3.amazonaws.com/folder/4fbaaa31db8cec0923000019-medium.png"
+  width: 120,
+  height: 103,
+  depth: 8,
+  format: "PNG",
+  name: "dragon.png",
+  size: 26887,
+  url: "http://my_bucket.s3.amazonaws.com/folder/4fbaaa31db8cec0923000019-medium.png"
 }
 ```
 
-### Styles and ImageMagick Transformations
+## Styles and ImageMagick Transformations
 
 Transformations are achieved by invoking the **convert** command from ImageMagick and passing all the properties of the style as arguments.
 
@@ -95,60 +95,68 @@ Example in convert command:
 Example in plugin options:
 
 ```javascript
-transforms: {
-  small: {
-    resize: '50%'
-  }
-}
+PostSchema.plugin(crate, {
+  ...
+  fields: {
+    image: {
+      processor: new ImageMagick({
+        transforms: {
+          small: {
+            resize: "50%"
 ```
 
-#### Multiple Transformations
+### Multiple Transformations
 
-Use another properties under the style to provide more transformations
+Use another properties under the transform to provide more transformations
 
 ```javascript
-transforms: {
-  small: {
-    crop: '120x120',
-    blur: '5x10' //radius x stigma
-  }
-}
+PostSchema.plugin(crate, {
+  ...
+  fields: {
+    image: {
+      processor: new ImageMagick({
+        transforms: {
+          small: {
+            crop: "120x120",
+            blur: "5x10" //radius x stigma
 ```
 
-More information about 'blur' at the [ImageMagick website] http://www.imagemagick.org/script/command-line-options.php#blur
+For more information on available transform options, see the [ImageMagick website](http://www.imagemagick.org/script/command-line-options.php).
 
-#### Changing the Destination Format
+### Changing the Destination Format
 
-You can change the destination format by using the special transformation '$format' with a known file extension like *png*, *jpg*, *gif*, etc.
+You can change the destination format by using the special transformation 'format' with a known file extension like *png*, *jpg*, *gif*, etc.
 
 Example:
 
+```javascript
+PostSchema.plugin(crate, {
+  ...
+  fields: {
+    image: {
+      processor: new ImageMagick({
+        transforms: {
+          as_jpeg: {
+            format: "jpg"
 ```
-transforms: {
-  as_jpeg: {
-    'format': 'jpg'
-  }
-}
-```
 
-#### Supported Formats
+### Supported Formats
 
-There are two possibilities to define which file formats should be supported:
+By default we'll only try to process a few image types.  The supported list defaults to jpgs, pngs, gifs and tiffs.
 
-1. White list (default)
-2. Formats listed with certain flags by `convert -list format`
-
-##### White List
-
-The default white list contains:
-
-* PNG
-* GIF
-* TIFF
-* JPEG
-
-To add a format call the following method before using the plugin in the mongoose schema:
+This list can be overriden by specifying the `formats` argument:
 
 ```javascript
-attachments.registerDecodingFormat('BMP');
+PostSchema.plugin(crate, {
+  ...
+  fields: {
+    image: {
+      processor: new ImageMagick({
+        formats: ["JPEG", "GIF", "PNG"]
+```
+
+The values should match up with `convert`'s supported formats.  To see a list of all formats supported by your ImageMagick install, run:
+
+```
+convert -list format
 ```
