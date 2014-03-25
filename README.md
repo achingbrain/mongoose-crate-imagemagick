@@ -30,8 +30,8 @@ PostSchema.plugin(crate, {
   fields: {
     image: {
       processor: new ImageMagick({
-        tmpDir: "/tmp", // defaults to os.tmpdir()
-        formats: ["JPEG", "GIF", "PNG"], // defaults to jpgs, gifs, pngs and tiffs
+        tmpDir: "/tmp", // Optional, where transformed files are placed before storage, defaults to os.tmpdir()
+        formats: ["JPEG", "GIF", "PNG"], // Optional, supported formats, defaults to ["JPEG", "GIF", "PNG", "TIFF"]
         transforms: {
           original: {
             // keep the original file
