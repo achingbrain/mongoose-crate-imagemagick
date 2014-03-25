@@ -93,7 +93,7 @@ describe("ImageMagick", function() {
 
 		var schema = processor.createFieldSchema();
 		schema.original.format.should.equal(String);
-		schema.original.depth.should.equal(String);
+		schema.original.depth.should.equal(Number);
 		schema.original.width.should.equal(Number);
 		schema.original.height.should.equal(Number);
 
