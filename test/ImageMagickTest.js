@@ -3,6 +3,7 @@ var should = require("should"),
 	os = require("os"),
 	fs = require("fs"),
 	path = require("path"),
+	sinon = require("sinon"),
 	ImageMagick = require("../lib/ImageMagick");
 
 function randomString(length) {
@@ -20,28 +21,46 @@ describe("ImageMagick", function() {
 
 		done();
 	})
-/*
-	it("should process a png", function(done) {
-		var processor = new ImageMagick({});
-		var file = path.resolve(__dirname + "/./fixtures/node_js_logo.png");
 
-		processor.process(file, null, null, null, function(error) {
-			if(error) {
-				throw error;
+	it("should process a png", function(done) {
+		var processor = new ImageMagick({
+			transforms: {
+				original: {
+
+				}
 			}
+		});
+
+		var file = path.resolve(__dirname + "/./fixtures/node_js_logo.png");
+		var storageProvider = {
+			save: sinon.stub()
+		};
+		storageProvider.save.callsArgWith(1, null, "http://foo.bar");
+
+		processor.process({
+			path: file
+		}, storageProvider, {
+			id: "model_id",
+			original: {}
+		}, function(error) {
+			should(error).not.ok;
 
 			done();
 		});
 	})
-*/
+
 	it("should not process text file", function(done) {
-		var processor = new ImageMagick({});
+		var processor = new ImageMagick({
+			transforms: {
+				original: {
+
+				}
+			}
+		});
 		var file = path.resolve(__dirname + "/./fixtures/foo.txt");
 
-		processor.process(file, null, null, null, function(error) {
-			if(error) {
-				throw error;
-			}
+		processor.process(file, null, null, function(error) {
+			should(error).ok;
 
 			done();
 		});
