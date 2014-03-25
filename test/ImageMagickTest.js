@@ -37,13 +37,27 @@ describe("ImageMagick", function() {
 		};
 		storageProvider.save.callsArgWith(1, null, "http://foo.bar");
 
-		processor.process({
-			path: file
-		}, storageProvider, {
+		var model = {
 			id: "model_id",
 			original: {}
-		}, function(error) {
+		};
+
+		processor.process({
+			path: file,
+			mimeType: "image/png"
+		}, storageProvider, model, function(error) {
 			should(error).not.ok;
+
+			// should have populated meta data
+			model.original.should.be.ok;
+			model.original.depth.should.equal(8);
+			model.original.format.should.equal("PNG");
+			model.original.height.should.equal(196);
+			model.original.mimeType.should.equal("image/png");
+			model.original.name.should.equal("node_js_logo.png");
+			model.original.size.should.equal(19401);
+			model.original.url.should.equal("http://foo.bar");
+			model.original.width.should.equal(574);
 
 			done();
 		});
@@ -64,5 +78,23 @@ describe("ImageMagick", function() {
 
 			done();
 		});
+	})
+
+	it("should extend field schema", function(done) {
+		var processor = new ImageMagick({
+			transforms: {
+				original: {
+
+				}
+			}
+		});
+
+		var schema = processor.createFieldSchema();
+		schema.original.format.should.equal(String);
+		schema.original.depth.should.equal(String);
+		schema.original.width.should.equal(Number);
+		schema.original.height.should.equal(Number);
+
+		done();
 	})
 })
