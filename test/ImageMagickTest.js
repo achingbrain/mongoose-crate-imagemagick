@@ -1,16 +1,7 @@
 var should = require("should"),
-	crypto = require("crypto"),
-	os = require("os"),
-	fs = require("fs"),
 	path = require("path"),
 	sinon = require("sinon"),
 	ImageMagick = require("../lib/ImageMagick");
-
-function randomString(length) {
-	return crypto.randomBytes(Math.ceil(length/2))
-		.toString("hex")
-		.slice(0, length);
-}
 
 describe("ImageMagick", function() {
 
@@ -44,7 +35,8 @@ describe("ImageMagick", function() {
 
 		processor.process({
 			path: file,
-			mimeType: "image/png"
+			mimeType: "image/png",
+			name: "node_js_logo.png"
 		}, storageProvider, model, function(error) {
 			should(error).not.ok;
 
@@ -54,7 +46,7 @@ describe("ImageMagick", function() {
 			model.original.format.should.equal("PNG");
 			model.original.height.should.equal(196);
 			model.original.width.should.equal(574);
-			model.original.mimeType.should.equal("image/png");
+			model.original.type.should.equal("image/png");
 			model.original.name.should.equal("node_js_logo.png");
 			model.original.url.should.equal("http://foo.bar");
 
@@ -124,14 +116,15 @@ describe("ImageMagick", function() {
 
 		processor.process({
 			path: file,
-			mimeType: "image/png"
+			mimeType: "image/png",
+			name: "node_js_logo.png"
 		}, storageProvider, model, function(error) {
 			should(error).not.ok;
 
 			model.smaller.format.should.equal("JPEG");
 			model.smaller.width.should.equal(100);
 			model.smaller.height.should.equal(34);
-			model.smaller.mimeType.should.equal("image/jpeg");
+			model.smaller.type.should.equal("image/jpeg");
 
 			done();
 		});
