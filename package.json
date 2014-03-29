@@ -15,7 +15,7 @@
     "coveralls": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "mongoose-crate": "git://github.com/achingbrain/mongoose-crate.git",
+    "mongoose-crate": "^1.0.0",
     "async": "^0.2",
     "imagemagick": "^0.1",
     "mkdirp": "^0.3",
