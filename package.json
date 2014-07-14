@@ -3,7 +3,7 @@
   "name": "mongoose-crate-imagemagick",
   "description": "Perform imagemagick transformations on image files",
   "keywords": ["mongoose", "uploads", "attachments", "files", "imagemagick"],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/achingbrain/mongoose-crate-imagemagick",
   "repository": {
     "type": "git",
