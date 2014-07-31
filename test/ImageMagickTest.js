@@ -129,4 +129,111 @@ describe('ImageMagick', function() {
       done()
     })
   })
+
+  it('should remove all transforms', function(done) {
+    var processor = new ImageMagick({
+      transforms: {
+        original: {
+
+        },
+        thumbnail: {
+
+        }
+      }
+    })
+
+    var storageProvider = {
+      remove: sinon.stub()
+    }
+    storageProvider.remove.callsArg(1)
+
+    processor.remove(storageProvider, {
+      original: {
+        url: 'foo'
+      },
+      thumbnail: {
+        url: 'bar'
+      }
+    }, function() {
+      storageProvider.remove.callCount.should.equal(2)
+
+      done()
+    })
+  })
+
+  it('should not remove transforms with no URL', function(done) {
+    var processor = new ImageMagick({
+      transforms: {
+        original: {
+
+        },
+        thumbnail: {
+
+        }
+      }
+    })
+
+    var storageProvider = {
+      remove: sinon.stub()
+    }
+    storageProvider.remove.callsArg(1)
+
+    processor.remove(storageProvider, {
+      original: {
+        url: null
+      },
+      thumbnail: {
+        url: 'bar'
+      }
+    }, function() {
+      // only one url present..
+      storageProvider.remove.callCount.should.equal(1)
+
+      done()
+    })
+  })
+
+  it('should say we will overwrite transforms', function() {
+    var processor = new ImageMagick({
+      transforms: {
+        original: {
+
+        },
+        thumbnail: {
+
+        }
+      }
+    })
+
+    processor.willOverwrite({
+      original: {
+        url: 'foo'
+      },
+      thumbnail: {
+        url: 'bar'
+      }
+    }).should.be.true
+  })
+
+  it('should say we will not overwrite transforms without URLs', function() {
+    var processor = new ImageMagick({
+      transforms: {
+        original: {
+
+        },
+        thumbnail: {
+
+        }
+      }
+    })
+
+    processor.willOverwrite({
+      original: {
+        url: null
+      },
+      thumbnail: {
+        url: null
+      }
+    }).should.be.false
+  })
 })
