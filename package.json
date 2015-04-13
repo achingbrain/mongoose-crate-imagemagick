@@ -17,7 +17,7 @@
   "dependencies": {
     "mongoose-crate": "^1.0.0",
     "async": "^0.9",
-    "imagemagick": "^0.1",
+    "gm": "^1.17.0",
     "mkdirp": "^0.5",
     "mmmagic": "^0.3",
     "check-types": "^1.2"
