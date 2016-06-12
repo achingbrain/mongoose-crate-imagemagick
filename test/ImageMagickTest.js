@@ -3,7 +3,7 @@
 const should = require('should')
 const path = require('path')
 const sinon = require('sinon')
-const ImageMagick = require('../lib/ImageMagick')
+const ImageMagick = require('../')
 const describe = require('mocha').describe
 const it = require('mocha').it
 
@@ -12,6 +12,32 @@ describe('ImageMagick', () => {
     (() => new ImageMagick()).should.throw()
 
     done()
+  })
+
+  it('should throw if creating the temp dir fails', (done) => {
+    (() => new ImageMagick({
+      tmpDir: 5,
+      transforms: {
+        original: {
+
+        }
+      }
+    })).should.throw()
+
+    done()
+  })
+
+  it('should override formats', () => {
+    const im = new ImageMagick({
+      transforms: {
+        original: {
+
+        }
+      },
+      formats: ['png']
+    })
+
+    im._options.formats.should.containEql('png')
   })
 
   it('should process a png', (done) => {
@@ -53,6 +79,37 @@ describe('ImageMagick', () => {
 
       // this can vary depending on file system...
       model.original.size.should.be.greaterThan(19000)
+
+      done()
+    })
+  })
+
+  it('should pass an error to the callback when asked to process an unsupported format', (done) => {
+    const processor = new ImageMagick({
+      transforms: {
+        original: {
+
+        }
+      }
+    })
+
+    const file = path.resolve(path.join(__dirname, '.', 'fixtures', 'foo.txt'))
+    const storageProvider = {
+      save: sinon.stub()
+    }
+    storageProvider.save.callsArgWith(1, null, 'http://foo.bar')
+
+    const model = {
+      id: 'model_id',
+      original: {}
+    }
+
+    processor.process({
+      path: file,
+      mimeType: 'image/png',
+      name: 'node_js_logo.png'
+    }, storageProvider, model, (error) => {
+      error.message.should.containEql('File was not an image')
 
       done()
     })
@@ -236,5 +293,21 @@ describe('ImageMagick', () => {
         url: null
       }
     }).should.be.false
+  })
+
+  it('should support passing an array of args to convert', () => {
+    const processor = new ImageMagick({
+      transforms: {
+        original: {
+
+        }
+      }
+    })
+
+    const args = processor._setUpConvertArgs({
+      foo: ['bar', 'baz']
+    })
+
+    args.should.deepEqual(['-foo', 'bar', 'baz'])
   })
 })
