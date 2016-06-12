@@ -1,2 +1,2 @@
 
-module.exports = require("./lib/ImageMagick");
+module.exports = require('./lib/ImageMagick')

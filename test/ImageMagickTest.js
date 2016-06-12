@@ -1,20 +1,21 @@
-var should = require('should'),
-  path = require('path'),
-  sinon = require('sinon'),
-  ImageMagick = require('../lib/ImageMagick')
+'use strict'
 
-describe('ImageMagick', function() {
+const should = require('should')
+const path = require('path')
+const sinon = require('sinon')
+const ImageMagick = require('../lib/ImageMagick')
+const describe = require('mocha').describe
+const it = require('mocha').it
 
-  it('should object strenuously if options are not specified', function(done) {
-    (function() {
-      new ImageMagick()
-    }).should.throw()
+describe('ImageMagick', () => {
+  it('should object strenuously if options are not specified', (done) => {
+    (() => new ImageMagick()).should.throw()
 
     done()
   })
 
-  it('should process a png', function(done) {
-    var processor = new ImageMagick({
+  it('should process a png', (done) => {
+    const processor = new ImageMagick({
       transforms: {
         original: {
 
@@ -22,13 +23,13 @@ describe('ImageMagick', function() {
       }
     })
 
-    var file = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
-    var storageProvider = {
+    const file = path.resolve(path.join(__dirname, '.', 'fixtures', 'node_js_logo.png'))
+    const storageProvider = {
       save: sinon.stub()
     }
     storageProvider.save.callsArgWith(1, null, 'http://foo.bar')
 
-    var model = {
+    const model = {
       id: 'model_id',
       original: {}
     }
@@ -37,7 +38,7 @@ describe('ImageMagick', function() {
       path: file,
       mimeType: 'image/png',
       name: 'node_js_logo.png'
-    }, storageProvider, model, function(error) {
+    }, storageProvider, model, (error) => {
       should(error).not.ok
 
       // should have populated meta data
@@ -57,25 +58,25 @@ describe('ImageMagick', function() {
     })
   })
 
-  it('should not process text file', function(done) {
-    var processor = new ImageMagick({
+  it('should not process text file', (done) => {
+    const processor = new ImageMagick({
       transforms: {
         original: {
 
         }
       }
     })
-    var file = path.resolve(__dirname + '/./fixtures/foo.txt')
+    const file = path.resolve(path.join(__dirname, '.', 'fixtures', 'foo.txt'))
 
-    processor.process(file, null, null, function(error) {
+    processor.process(file, null, null, (error) => {
       should(error).ok
 
       done()
     })
   })
 
-  it('should extend field schema', function(done) {
-    var processor = new ImageMagick({
+  it('should extend field schema', (done) => {
+    const processor = new ImageMagick({
       transforms: {
         original: {
 
@@ -83,7 +84,7 @@ describe('ImageMagick', function() {
       }
     })
 
-    var schema = processor.createFieldSchema()
+    const schema = processor.createFieldSchema()
     schema.original.format.should.equal(String)
     schema.original.depth.should.equal(Number)
     schema.original.width.should.equal(Number)
@@ -92,8 +93,8 @@ describe('ImageMagick', function() {
     done()
   })
 
-  it('should transform a png', function(done) {
-    var processor = new ImageMagick({
+  it('should transform a png', (done) => {
+    const processor = new ImageMagick({
       transforms: {
         smaller: {
           'resize': '100x34',
@@ -102,14 +103,14 @@ describe('ImageMagick', function() {
       }
     })
 
-    var file = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
-    var storageProvider = {
-      save: function(path, callback) {
+    const file = path.resolve(path.join(__dirname, '.', 'fixtures', 'node_js_logo.png'))
+    const storageProvider = {
+      save: (path, callback) => {
         callback(null, path)
       }
     }
 
-    var model = {
+    const model = {
       id: 'model_id',
       smaller: {}
     }
@@ -118,7 +119,7 @@ describe('ImageMagick', function() {
       path: file,
       mimeType: 'image/png',
       name: 'node_js_logo.png'
-    }, storageProvider, model, function(error) {
+    }, storageProvider, model, (error) => {
       should(error).not.ok
 
       model.smaller.format.should.equal('JPEG')
@@ -130,8 +131,8 @@ describe('ImageMagick', function() {
     })
   })
 
-  it('should remove all transforms', function(done) {
-    var processor = new ImageMagick({
+  it('should remove all transforms', (done) => {
+    const processor = new ImageMagick({
       transforms: {
         original: {
 
@@ -142,7 +143,7 @@ describe('ImageMagick', function() {
       }
     })
 
-    var storageProvider = {
+    const storageProvider = {
       remove: sinon.stub()
     }
     storageProvider.remove.callsArg(1)
@@ -154,15 +155,15 @@ describe('ImageMagick', function() {
       thumbnail: {
         url: 'bar'
       }
-    }, function() {
+    }, () => {
       storageProvider.remove.callCount.should.equal(2)
 
       done()
     })
   })
 
-  it('should not remove transforms with no URL', function(done) {
-    var processor = new ImageMagick({
+  it('should not remove transforms with no URL', (done) => {
+    const processor = new ImageMagick({
       transforms: {
         original: {
 
@@ -173,7 +174,7 @@ describe('ImageMagick', function() {
       }
     })
 
-    var storageProvider = {
+    const storageProvider = {
       remove: sinon.stub()
     }
     storageProvider.remove.callsArg(1)
@@ -185,7 +186,7 @@ describe('ImageMagick', function() {
       thumbnail: {
         url: 'bar'
       }
-    }, function() {
+    }, () => {
       // only one url present..
       storageProvider.remove.callCount.should.equal(1)
 
@@ -193,8 +194,8 @@ describe('ImageMagick', function() {
     })
   })
 
-  it('should say we will overwrite transforms', function() {
-    var processor = new ImageMagick({
+  it('should say we will overwrite transforms', () => {
+    const processor = new ImageMagick({
       transforms: {
         original: {
 
@@ -215,8 +216,8 @@ describe('ImageMagick', function() {
     }).should.be.true
   })
 
-  it('should say we will not overwrite transforms without URLs', function() {
-    var processor = new ImageMagick({
+  it('should say we will not overwrite transforms without URLs', () => {
+    const processor = new ImageMagick({
       transforms: {
         original: {
 

@@ -37,7 +37,8 @@
     "mocha": "^2.5.3",
     "mongoose": "^4.4.20",
     "should": "^9.0.2",
-    "sinon": "^1.9"
+    "sinon": "^1.9",
+    "standard": "^7.1.2"
   },
   "pre-commit": [
     "lint",
