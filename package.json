@@ -2,7 +2,13 @@
   "author": "Alex Potsides",
   "name": "mongoose-crate-imagemagick",
   "description": "Perform imagemagick transformations on image files",
-  "keywords": ["mongoose", "uploads", "attachments", "files", "imagemagick"],
+  "keywords": [
+    "mongoose",
+    "uploads",
+    "attachments",
+    "files",
+    "imagemagick"
+  ],
   "version": "1.0.3",
   "homepage": "https://github.com/achingbrain/mongoose-crate-imagemagick",
   "repository": {
@@ -11,23 +17,30 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "lint": "standard",
+    "test": "mocha",
+    "test:coverage": "istanbul --include-all-sources cover _mocha",
+    "test:coverage:check": "istanbul --include-all-sources cover _mocha && istanbul check-coverage --statement 100 --branch 100 --function 100",
     "coveralls": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "mongoose-crate": "^1.0.0",
-    "async": "^0.9",
+    "async": "^1.5.2",
+    "check-types": "^7.0.0",
     "imagemagick": "^0.1",
     "mkdirp": "^0.5",
-    "mmmagic": "^0.3",
-    "check-types": "^1.2"
+    "mmmagic": "^0.4.4",
+    "mongoose-crate": "^1.0.0"
   },
   "devDependencies": {
-    "mocha": "^1.18",
-    "should": "^4.0",
-    "mongoose": "^3.8",
-    "istanbul": "^0.3",
-    "sinon": "^1.9",
-    "coveralls": "^2.8"
-  }
+    "coveralls": "^2.8",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3",
+    "mongoose": "^4.4.20",
+    "should": "^9.0.2",
+    "sinon": "^1.9"
+  },
+  "pre-commit": [
+    "lint",
+    "test:coverage:check"
+  ]
 }
