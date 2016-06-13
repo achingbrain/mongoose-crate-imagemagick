@@ -8,13 +8,11 @@ const describe = require('mocha').describe
 const it = require('mocha').it
 
 describe('ImageMagick', () => {
-  it('should object strenuously if options are not specified', (done) => {
+  it('should object strenuously if options are not specified', () => {
     (() => new ImageMagick()).should.throw()
-
-    done()
   })
 
-  it('should throw if creating the temp dir fails', (done) => {
+  it('should throw if creating the temp dir fails', () => {
     (() => new ImageMagick({
       tmpDir: 5,
       transforms: {
@@ -23,8 +21,6 @@ describe('ImageMagick', () => {
         }
       }
     })).should.throw()
-
-    done()
   })
 
   it('should override formats', () => {
