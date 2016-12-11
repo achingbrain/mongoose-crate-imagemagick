@@ -9,7 +9,7 @@
     "files",
     "imagemagick"
   ],
-  "version": "1.0.5",
+  "version": "1.0.6",
   "homepage": "https://github.com/achingbrain/mongoose-crate-imagemagick",
   "repository": {
     "type": "git",
