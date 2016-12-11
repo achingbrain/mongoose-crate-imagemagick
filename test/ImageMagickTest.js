@@ -86,10 +86,13 @@ describe('ImageMagick', () => {
         original: {
 
         }
-      }
+      },
+      formats: [
+        'JPG'
+      ]
     })
 
-    const file = path.resolve(path.join(__dirname, '.', 'fixtures', 'foo.txt'))
+    const file = path.resolve(path.join(__dirname, '.', 'fixtures', 'node_js_logo.png'))
     const storageProvider = {
       save: sinon.stub()
     }
@@ -105,7 +108,7 @@ describe('ImageMagick', () => {
       mimeType: 'image/png',
       name: 'node_js_logo.png'
     }, storageProvider, model, (error) => {
-      error.message.should.containEql('File was not an image')
+      error.message.should.containEql('File was not a supported format')
 
       done()
     })
